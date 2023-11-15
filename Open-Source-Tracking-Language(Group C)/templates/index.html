@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Code tracking System</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600&display=swap">
+    <style>
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: #282c34; /* Dark background similar to code editors */
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            text-align: left;
+            background-color: #1e1e1e;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            max-width: 800px; /* Increased max-width for larger screens */
+            color: #abb2bf;
+            height: 100%;
+            overflow-x: auto; /* Allow horizontal scrolling if needed */
+        }
+
+        h1 {
+            color: #61afef;
+        }
+
+        textarea {
+            width: calc(100% - 20px);
+            margin: 10px 0;
+            padding: 10px;
+            font-family: 'Courier New', monospace; /* Monospace font for code */
+            font-size: 14px;
+            border: 1px solid #444;
+            border-radius: 5px;
+            box-sizing: border-box;
+            resize: vertical;
+            height: 300px;
+            background-color: #282c34;
+            color: #abb2bf;
+        }
+
+        button {
+            background-color: #61afef;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin-bottom: 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #528bff;
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+        }
+
+        .error {
+            color: #e06c75;
+            background-color: #3e4451;
+            border: 1px solid #4b5263;
+        }
+
+        .success {
+            color: #98c379;
+            background-color: #2d323d;
+            border: 1px solid #3b404d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Python code Tracking System</h1>
+        <textarea id="code" placeholder="Enter your code here..."></textarea>
+        <button id="analyzeButton">Check Code</button>
+        <div id="result" class="result"></div>
+    </div>
+
+    <script>
+        document.getElementById("analyzeButton").addEventListener("click", function() {
+            var code = document.getElementById("code").value;
+            fetch('/analyze_code', {
+                method: 'POST',
+                body: 'code=' + encodeURIComponent(code),
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                var resultDiv = document.getElementById("result");
+                resultDiv.innerHTML = data.error ? `<div class="error result-box">${data.message}</div>` : `<div class="success result-box">${data.message}</div>`;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    </script>
+</body>
+</html>
