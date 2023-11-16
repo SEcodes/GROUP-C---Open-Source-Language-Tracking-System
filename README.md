@@ -19,7 +19,7 @@ Ensure you have the following prerequisites installed:
 - Python 3.12.0
 - Flask
 
-### Installation
+## Installation
 
 1. Clone the repository:
    
